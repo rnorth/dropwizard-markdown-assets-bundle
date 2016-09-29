@@ -14,6 +14,7 @@ import com.vladsch.flexmark.util.options.DataHolder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 import io.dropwizard.servlets.assets.AssetServlet;
 import io.dropwizard.servlets.assets.ResourceURL;
 import org.jetbrains.annotations.NotNull;
@@ -205,8 +206,15 @@ public class MarkdownAssetsServlet extends HttpServlet {
         String html = renderer.render(parsedMarkdown);
 
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
-        cfg.setClassForTemplateLoading(this.getClass(), "/docs");
-        Template template = cfg.getTemplate("template.ftl");
+        Template template;
+        try {
+            cfg.setClassForTemplateLoading(this.getClass(), resourcePath);
+            template = cfg.getTemplate("template.ftl");
+        } catch (TemplateNotFoundException e) {
+            cfg.setClassForTemplateLoading(this.getClass(), "/");
+            template = cfg.getTemplate("default-dropwizard-markdown-template.ftl");
+        }
+
         String title = resourceRootURL.relativize(markdownSourceURL.toURI()).toString();
         PageModel pageModel = new PageModel(html, title, configuration);
 
