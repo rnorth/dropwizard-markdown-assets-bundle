@@ -25,11 +25,11 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * <p>An assets bundle (like {@link io.dropwizard.assets.AssetsBundle}) that allows a dropwizard app to serve
+ * <p>An assets bundle (like Dropwizard's AssetsBundle) that allows a dropwizard app to serve
  * rendered Markdown documents from the classpath. The goal is to provide a way to quickly and easily serve up
  * static documentation for a service, taking advantage of Markdown's ease of editing and reusability.</p>
  *
- * <p>Additionally, it is heavily inspired by {@link com.bazaarvoice.dropwizard.assets.ConfiguredAssetsBundle}, which:
+ * <p>Additionally, it is heavily inspired by Bazaar Voice's ConfiguredAssetsBundle, which:
  * </p>
  *
  * <blockquote>utilizes configuration to provide the
