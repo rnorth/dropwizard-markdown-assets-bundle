@@ -527,6 +527,8 @@ pre {
 
 pre code {
     line-height: 140%;
+    display: block;
+    overflow-wrap: break-word;
 }
 
 blockquote {
