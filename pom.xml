@@ -2,15 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>c9y-dropwizard</artifactId>
-        <groupId>org.rnorth.c9y</groupId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../c9y.io/c9y-dropwizard/pom.xml</relativePath>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.rnorth</groupId>
+    <groupId>org.rnorth.dropwizard</groupId>
     <artifactId>dropwizard-markdown-assets-bundle</artifactId>
     <version>1.0</version>
 
@@ -135,6 +129,11 @@
             <artifactId>visible-assertions</artifactId>
             <version>1.0.5</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
         </dependency>
     </dependencies>
 
