@@ -149,4 +149,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:https://github.com/rnorth/dropwizard-markdown-assets-bundle.git</connection>
+        <developerConnection>scm:git:git@github.com:rnorth/dropwizard-markdown-assets-bundle.git</developerConnection>
+        <url>https://github.com/rnorth/dropwizard-markdown-assets-bundle</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <url>https://api.bintray.com/maven/richnorth/maven/dropwizard-markdown-assets-bundle</url>
+        </repository>
+    </distributionManagement>
 </project>
