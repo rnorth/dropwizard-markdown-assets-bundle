@@ -94,7 +94,9 @@ public class MarkdownAssetsBundleIntTest {
 
         @Override
         public void initialize(Bootstrap<TestConfiguration> bootstrap) {
-            bootstrap.addBundle(new MarkdownAssetsBundle());
+            bootstrap.addBundle(new MarkdownAssetsBundle()
+                                    .withResourcePath("/docs")
+                                    .withUriPath("/docs"));
         }
 
         @Override
