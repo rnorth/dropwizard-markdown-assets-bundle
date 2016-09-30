@@ -2,6 +2,7 @@ package org.rnorth.dropwizard.markdown.internal;
 
 import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheBuilderSpec;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.ByteStreams;
@@ -36,7 +37,6 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import static javax.ws.rs.core.HttpHeaders.IF_MODIFIED_SINCE;
 import static javax.ws.rs.core.HttpHeaders.IF_NONE_MATCH;
@@ -86,14 +86,14 @@ public class MarkdownAssetsServlet extends HttpServlet {
      * /data/assets/example.js} in response to a request for {@code /js/example.js}. If a directory
      * is requested and {@code indexFile} is defined, then {@code AssetServlet} will attempt to
      * serve a file with that name in that directory.
-     *
-     * @param resourcePath   the base URL from which assets are loaded
-     * @param uriPath        the URI path fragment in which all requests are rooted
-     * @param indexFile      the filename to use when directories are requested
-     * @param defaultCharset the default character set
-     * @param configuration  environment-specific configuration properties
-     * @param extensions     Flexmark-Java markdown rendering extensions to use
-     * @param options        Flexmark-Java markdown rendering options
+     *  @param resourcePath      the base URL from which assets are loaded
+     * @param uriPath            the URI path fragment in which all requests are rooted
+     * @param indexFile          the filename to use when directories are requested
+     * @param defaultCharset     the default character set
+     * @param configuration      environment-specific configuration properties
+     * @param extensions         Flexmark-Java markdown rendering extensions to use
+     * @param options            Flexmark-Java markdown rendering options
+     * @param cacheBuilderSpec   {@link CacheBuilderSpec} for rendered pages
      */
     public MarkdownAssetsServlet(@NotNull String resourcePath,
                                  @NotNull String uriPath,
@@ -101,7 +101,8 @@ public class MarkdownAssetsServlet extends HttpServlet {
                                  @NotNull Charset defaultCharset,
                                  @NotNull MarkdownAssetsConfiguration configuration,
                                  @NotNull List<Extension> extensions,
-                                 @NotNull DataHolder options) {
+                                 @NotNull DataHolder options,
+                                 @NotNull CacheBuilderSpec cacheBuilderSpec) {
 
         this.resourcePath = resourcePath;
         this.uriPath = uriPath;
@@ -113,8 +114,7 @@ public class MarkdownAssetsServlet extends HttpServlet {
         renderer = HtmlRenderer.builder(options).extensions(extensions).build();
 
         assetServlet = new AssetServlet(resourcePath, uriPath, indexFile, defaultCharset);
-        pageCache = CacheBuilder.newBuilder()
-                .expireAfterWrite(1, TimeUnit.MINUTES)
+        pageCache = CacheBuilder.from(cacheBuilderSpec)
                 .build(new CacheLoader<URL, CachedPage>() {
                     @Override
                     public CachedPage load(@NotNull URL key) throws Exception {
