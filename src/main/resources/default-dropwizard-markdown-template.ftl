@@ -7,7 +7,7 @@
     <#if useHlJs>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
     </#if>
-    <link rel="stylesheet" href="/docs/dropwizard-markdown.css"/>
+    <link rel="stylesheet" href="${uriPath}/dropwizard-markdown.css"/>
 </head>
 <body>
     ${html}

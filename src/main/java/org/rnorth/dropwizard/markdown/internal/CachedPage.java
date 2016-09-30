@@ -10,10 +10,12 @@ class CachedPage {
     public final byte[] renderedBytes;
     public final long lastModifiedTime;
     public final String eTag;
+    public final String mimeType;
 
-    public CachedPage(byte[] renderedBytes, long lastModifiedTime) {
+    public CachedPage(byte[] renderedBytes, long lastModifiedTime, String mimeType) {
         this.renderedBytes = renderedBytes;
         this.lastModifiedTime = lastModifiedTime;
         this.eTag = "\"" + Hashing.murmur3_128().hashBytes(renderedBytes).toString() + "\"";
+        this.mimeType = mimeType;
     }
 }

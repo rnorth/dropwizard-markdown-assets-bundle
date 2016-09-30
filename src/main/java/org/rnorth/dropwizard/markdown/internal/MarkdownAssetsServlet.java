@@ -43,7 +43,7 @@ import static javax.ws.rs.core.HttpHeaders.IF_NONE_MATCH;
 
 /**
  * Assets servlet that will render markdown assets rather than just passing the raw markdown to the client.
- *
+ * <p>
  * Non-markdown asset requests are passed through to a wrapped {@link AssetServlet} instance. This is so that the more
  * advanced HTTP features of {@link AssetServlet} (such as range support and fuller MIME support) remain available.
  */
@@ -78,7 +78,7 @@ public class MarkdownAssetsServlet extends HttpServlet {
     /**
      * Construct a {@link MarkdownAssetsServlet} configured with provided parameters, having a wrapped default
      * {@link AssetServlet} for fulfilling non-markdown asset requests.
-     *
+     * <p>
      * {@code MarkdownAssetsServlet} and {@link AssetServlet} serve static assets loaded from {@code resourceURL}
      * (typically a file: or jar: URL). The assets are served at URIs rooted at {@code uriPath}. For
      * example, given a {@code resourceURL} of {@code "file:/data/assets"} and a {@code uriPath} of
@@ -86,6 +86,7 @@ public class MarkdownAssetsServlet extends HttpServlet {
      * /data/assets/example.js} in response to a request for {@code /js/example.js}. If a directory
      * is requested and {@code indexFile} is defined, then {@code AssetServlet} will attempt to
      * serve a file with that name in that directory.
+     *
      * @param resourcePath   the base URL from which assets are loaded
      * @param uriPath        the URI path fragment in which all requests are rooted
      * @param indexFile      the filename to use when directories are requested
@@ -137,38 +138,47 @@ public class MarkdownAssetsServlet extends HttpServlet {
             path = "/" + indexFile;
         }
 
+        CachedPage renderedPage;
+        URL localSourceUrl;
         // If it's not markdown, delegate to AssetServlet
-        if (!path.endsWith(".md")) {
+        if (path.endsWith(".md")) {
+            localSourceUrl = this.getClass().getResource(resourcePath + path);
+
+            // No such resource
+            if (localSourceUrl == null) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            // Content path was outside of the resource root path - path traversal attempt?
+            if (!localSourceUrl.toString().startsWith(resourceRootURL.toString())) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                logger.warn("Resolved asset URL ({}) was outside of resource root ({}) - possible path traversal attempt?", localSourceUrl, resourceRootURL);
+                return;
+            }
+
+        } else if (path.endsWith("dropwizard-markdown.css")) {
+            localSourceUrl = this.getClass().getResource(resourcePath + path);
+
+            if (localSourceUrl == null) {
+                // no override provided - use default
+                localSourceUrl = this.getClass().getResource("/default-dropwizard-markdown.css");
+            }
+
+        } else {
             assetServlet.service(req, resp);
             return;
         }
 
-        URL markdownSourceURL = this.getClass().getResource(resourcePath + path);
-
-        // No such resource
-        if (markdownSourceURL == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        // Content path was outside of the resource root path - path traversal attempt?
-        if (!markdownSourceURL.toString().startsWith(resourceRootURL.toString())) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            logger.warn("Resolved asset URL ({}) was outside of resource root ({}) - possible path traversal attempt?", markdownSourceURL, resourceRootURL);
-            return;
-        }
-
         // Go ahead and fetch the rendered page (cached if available)
-        CachedPage renderedPage;
         try {
-            renderedPage = pageCache.get(markdownSourceURL);
+            renderedPage = pageCache.get(localSourceUrl);
         } catch (ExecutionException e) {
             // No rendered page for some reason
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             logger.error("Error when fetching cached/fresh rendered content", e);
             return;
         }
-
 
         // Don't need to send the full page content back, as the client already has latest version
         if (isCachedClientSide(req, renderedPage)) {
@@ -177,9 +187,9 @@ public class MarkdownAssetsServlet extends HttpServlet {
         }
 
         // If reached here, we're sending the full rendered page to the client
-        resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML);
         resp.setDateHeader(HttpHeaders.LAST_MODIFIED, renderedPage.lastModifiedTime);
         resp.setHeader(HttpHeaders.ETAG, renderedPage.eTag);
+        resp.setContentType(renderedPage.mimeType);
 
         try (OutputStream outputStream = resp.getOutputStream()) {
             ByteStreams.copy(new ByteArrayInputStream(renderedPage.renderedBytes), outputStream);
@@ -193,12 +203,22 @@ public class MarkdownAssetsServlet extends HttpServlet {
     }
 
     @NotNull
-    private CachedPage renderPage(URL markdownSourceURL) throws IOException, URISyntaxException, TemplateException {
+    private CachedPage renderPage(URL localSourceUrl) throws IOException, URISyntaxException, TemplateException {
+
+        if (localSourceUrl.toString().endsWith(".md")) {
+            return renderMarkdown(localSourceUrl);
+        } else {
+            return renderLocalAsset(localSourceUrl);
+        }
+    }
+
+    @NotNull
+    private CachedPage renderMarkdown(URL localSourceUrl) throws IOException, URISyntaxException, TemplateException {
         String markdownSource;
         try {
-            markdownSource = Resources.toString(markdownSourceURL, defaultCharset);
+            markdownSource = Resources.toString(localSourceUrl, defaultCharset);
         } catch (IOException e) {
-            logger.error("Markdown source (at {}) could not be loaded", markdownSourceURL);
+            logger.error("Markdown source (at {}) could not be loaded", localSourceUrl);
             throw e;
         }
 
@@ -215,14 +235,20 @@ public class MarkdownAssetsServlet extends HttpServlet {
             template = cfg.getTemplate("default-dropwizard-markdown-template.ftl");
         }
 
-        String title = resourceRootURL.relativize(markdownSourceURL.toURI()).toString();
-        PageModel pageModel = new PageModel(html, title, configuration);
+        String title = resourceRootURL.relativize(localSourceUrl.toURI()).toString();
+        PageModel pageModel = new PageModel(html, title, configuration, uriPath);
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             template.process(pageModel, new OutputStreamWriter(baos));
 
-            long lastModified = ResourceURL.getLastModified(markdownSourceURL);
-            return new CachedPage(baos.toByteArray(), lastModified);
+            long lastModified = ResourceURL.getLastModified(localSourceUrl);
+            return new CachedPage(baos.toByteArray(), lastModified, MediaType.TEXT_HTML);
         }
+    }
+
+    private CachedPage renderLocalAsset(URL localSourceUrl) throws IOException {
+        return new CachedPage(Resources.toByteArray(localSourceUrl),
+                ResourceURL.getLastModified(localSourceUrl),
+                com.google.common.net.MediaType.CSS_UTF_8.toString());
     }
 }

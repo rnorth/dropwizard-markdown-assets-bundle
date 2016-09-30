@@ -10,11 +10,13 @@ public class PageModel {
     private final String html;
     private final String title;
     private final MarkdownAssetsConfiguration configuration;
+    private final String uriPath;
 
-    public PageModel(String html, String title, MarkdownAssetsConfiguration configuration) {
+    public PageModel(String html, String title, MarkdownAssetsConfiguration configuration, String uriPath) {
         this.html = html;
         this.title = title;
         this.configuration = configuration;
+        this.uriPath = uriPath;
     }
 
     public String getHtml() {
@@ -43,5 +45,9 @@ public class PageModel {
 
     public String getCopyrightFooter() {
         return configuration.getCopyrightFooter();
+    }
+
+    public String getUriPath() {
+        return uriPath;
     }
 }

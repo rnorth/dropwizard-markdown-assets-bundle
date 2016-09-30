@@ -49,6 +49,12 @@ public class MarkdownAssetsBundleIntTest {
     }
 
     @Test
+    public void testFetchStylesheetOK() throws URISyntaxException {
+        String response = localTarget(client, APP, "/docs/dropwizard-markdown.css").get(String.class);
+        assertTrue("The stylesheet can be fetched from defaults", response.contains(""));
+    }
+
+    @Test
     public void testMermaidInclusion() throws URISyntaxException {
         String response = localTarget(client, APP, "/docs/index.md").get(String.class);
         assertTrue("Mermaid JS is included if the app is configured to do so", response.contains("mermaid.init"));
