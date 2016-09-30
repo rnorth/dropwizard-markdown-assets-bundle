@@ -1,5 +1,7 @@
 # dropwizard-markdown-assets-bundle
 
+[![CircleCI](https://circleci.com/gh/rnorth/dropwizard-markdown-assets-bundle.svg?style=svg)](https://circleci.com/gh/rnorth/dropwizard-markdown-assets-bundle)
+
 An assets bundle (like [io.dropwizard.assets.AssetsBundle](http://www.dropwizard.io/1.0.0/dropwizard-assets/apidocs/io/dropwizard/assets/AssetsBundle.html)) that allows a dropwizard app to render and serve Markdown documents from the classpath. The goal is to provide a way to quickly and easily serve up static documentation for a service, taking advantage of Markdown's ease of editing and reusability.
 
 In the 'out of the box' configuration (with default template and stylesheet) the following additional features are supported:
