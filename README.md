@@ -1,8 +1,75 @@
 # dropwizard-markdown-assets-bundle
 
-TODO Intro
+An assets bundle (like [io.dropwizard.assets.AssetsBundle](http://www.dropwizard.io/1.0.0/dropwizard-assets/apidocs/io/dropwizard/assets/AssetsBundle.html)) that allows a dropwizard app to render and serve Markdown documents from the classpath. The goal is to provide a way to quickly and easily serve up static documentation for a service, taking advantage of Markdown's ease of editing and reusability.
+
+In the 'out of the box' configuration (with default template and stylesheet) the following additional features are supported:
+
+* Fast, capable server-side markdown rendering using [flexmark-java](https://github.com/vsch/flexmark-java) (including Github Flavored Markdown):
+    * [Anchor links](https://github.com/vsch/flexmark-java/wiki/Extensions#anchorlink)
+    * [Autolink](https://github.com/vsch/flexmark-java/wiki/Extensions#autolink)
+    * [Footnotes](https://github.com/vsch/flexmark-java/wiki/Extensions#footnotes)
+    * [GFM Strikethrough](https://github.com/vsch/flexmark-java/wiki/Extensions#gfm-strikethrough)
+    * [GFM Task lists](https://github.com/vsch/flexmark-java/wiki/Extensions#gfm-tasklist)
+    * [GFM Tables](https://github.com/vsch/flexmark-java/wiki/Extensions#tables)
+* [Generated tables of contents](https://github.com/vsch/flexmark-java/wiki/Extensions#table-of-contents-1)
+* Optional rendering of diagrams using [Mermaid](https://knsv.github.io/mermaid/) in conjunction with fenced code blocks for graceful degradation:
+    * Graphs and flowcharts
+    * Sequence diagrams
+    * Gantt charts
+* Optional code syntax highlighting using [highlight.js](https://highlightjs.org/)
+* Optional analytics integration using Google Analytics
+* A simple and (subjectively!) nice default stylesheet
+* Ability to serve non-markdown static assets of any type, as well
 
 ## Usage
+
+### Basic setup
+
+1. Add the `dropwizard-markdown-assets-bundle` JAR to your Dropwizard application dependencies.
+2. Modify your configuration class to implement `MarkdownBundleConfiguration`. Implementing this will entail adding a `MarkdownAssetsConfiguration` getter to your configuration class, as in the example below.
+
+```java
+public static class TestConfiguration extends Configuration implements MarkdownBundleConfiguration {
+
+    public MarkdownAssetsConfiguration assets = new MarkdownAssetsConfiguration();
+
+    @Override
+    public MarkdownAssetsConfiguration getMarkdownAssetsConfiguration() {
+        return assets;
+    }
+}
+```
+
+3. Modify your Application `bootstrap` method to register a `MarkdownAssetsBundle`:
+
+```java
+        @Override
+        public void initialize(Bootstrap<TestConfiguration> bootstrap) {
+            bootstrap.addBundle(new MarkdownAssetsBundle());
+        }
+```
+
+4. (For starters) place a markdown file named `index.md` in the `/assets` folder of your application classpath.
+5. Launch the application and see that the markdown file is available at `http://localhost:8080/assets/`, rendered as HTML.
+
+### Customising behaviour
+
+The following fluent setter methods on `MarkdownAssetsBundle` allow its behaviour to be customized:
+
+* `withResourcePath`: set the resource path (in the classpath) of the markdown and static asset files (default: `/assets`)
+* `withUriPath`: set the uri path for the markdown and static asset files (default: `/assets`)
+* `withIndexFile`: set the name of the index file to use (default: `index.md`)
+* `withAssetsName`: set the name of servlet mapping used for this assets bundle
+* `withCacheBuilderSpec`: set the spec for the cache builder
+* `withFlexMarkExtensions`: set a list of flexmark-java extensions that should be used for markdown parsing/rendering
+* `withFlexMarkOptions`: set collection of flexmark-java options that should be used for markdown parsing/rendering
+
+Through configuration, on a per-environment basis the following may also be set:
+
+* Google Analytics tracking ID
+* Whether or not to enable Mermaid rendering
+* Whether or not to enable highlight.js highlighting
+* Page footer content (e.g. copyright notice)
 
 ### Customizing template and stylesheet
 
@@ -11,3 +78,20 @@ A default page template and CSS stylesheet are included to serve as a default ba
 The page template is defined with Freemarker, and defines the structure that rendered markdown content will be placed into.
 
 To replace either/both with your own, simply place a file named `template.ftl` or `dropwizard-markdown.css` in your `resourcePath` location (the root folder for markdown assets).
+
+### Licence
+
+See [LICENSE](LICENSE)
+
+### Copyright
+
+(c) Richard North 2016
+
+### Acknowledgements
+
+This library takes inspiration from or utilizes:
+
+* https://github.com/bazaarvoice/dropwizard-configurable-assets-bundle
+* https://github.com/vsch/flexmark-java
+* https://knsv.github.io/mermaid/
+* https://highlightjs.org/

@@ -79,7 +79,7 @@ public class MarkdownAssetsBundle implements ConfiguredBundle<MarkdownBundleConf
 
     /**
      * Fluent setter for {@code resourcePath}
-     * @param resourcePath the resource path (in the classpath) of the static asset files
+     * @param resourcePath the resource path (in the classpath) of the markdown and static asset files
      * @return
      */
     public MarkdownAssetsBundle withResourcePath(String resourcePath) {
@@ -92,7 +92,7 @@ public class MarkdownAssetsBundle implements ConfiguredBundle<MarkdownBundleConf
 
     /**
      * Fluent setter for {@code uriPath}
-     * @param uriPath      the uri path for the static asset files
+     * @param uriPath      the uri path for the markdown and static asset files
      * @return
      */
     public MarkdownAssetsBundle withUriPath(String uriPath) {
