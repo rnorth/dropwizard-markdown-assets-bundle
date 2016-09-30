@@ -4,4 +4,8 @@ machine:
   environment:
     MAVEN_OPTS: -Xmx512m
     _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+test:
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
 
