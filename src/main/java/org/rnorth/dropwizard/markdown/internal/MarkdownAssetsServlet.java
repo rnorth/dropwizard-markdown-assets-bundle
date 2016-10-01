@@ -134,16 +134,28 @@ public class MarkdownAssetsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
+        if (path == null) {
+            path = "/";
+        }
+
         if (path.endsWith("/")) {
             path = path + indexFile;
         }
 
         CachedPage renderedPage;
-        URL localSourceUrl;
+        URL localSourceUrl = this.getClass().getResource(resourcePath + path);
+
+        try {
+            if (localSourceUrl != null && ResourceURL.isDirectory(localSourceUrl)) {
+                path = path + "/" + indexFile;
+                localSourceUrl = this.getClass().getResource(resourcePath + path);
+            }
+        } catch (URISyntaxException e) {
+            throw new ServletException(e);
+        }
+
         // If it's not markdown, delegate to AssetServlet
         if (path.endsWith(".md")) {
-            localSourceUrl = this.getClass().getResource(resourcePath + path);
-
             // No such resource
             if (localSourceUrl == null) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -158,8 +170,6 @@ public class MarkdownAssetsServlet extends HttpServlet {
             }
 
         } else if (path.endsWith("dropwizard-markdown.css")) {
-            localSourceUrl = this.getClass().getResource(resourcePath + path);
-
             if (localSourceUrl == null) {
                 // no override provided - use default
                 localSourceUrl = this.getClass().getResource("/default-dropwizard-markdown.css");
