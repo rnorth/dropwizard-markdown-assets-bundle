@@ -101,6 +101,7 @@ This library takes inspiration from or utilizes:
 * https://github.com/vsch/flexmark-java
 * https://knsv.github.io/mermaid/
 * https://highlightjs.org/
+* https://necolas.github.io/normalize.css/
 
 ### Changelog
 
