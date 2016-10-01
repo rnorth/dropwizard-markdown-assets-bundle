@@ -104,6 +104,11 @@ This library takes inspiration from or utilizes:
 
 ### Changelog
 
+#### [1.0.1](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.1)
+
+* Fix index document rendering issue
+* Aesthetic improvements to default CSS stylesheet
+
 #### [1.0.0](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.0)
 
 Initial release
