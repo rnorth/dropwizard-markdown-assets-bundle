@@ -537,6 +537,10 @@ blockquote {
     font-style: italic;
 }
 
+ol > li {
+    margin-left: -2em;
+}
+
 ul > li {
     margin-left: -2em;
 }
