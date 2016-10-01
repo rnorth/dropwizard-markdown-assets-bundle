@@ -2,11 +2,15 @@
 
 [![CircleCI](https://circleci.com/gh/rnorth/dropwizard-markdown-assets-bundle.svg?style=svg)](https://circleci.com/gh/rnorth/dropwizard-markdown-assets-bundle)
 
-An assets bundle (like [io.dropwizard.assets.AssetsBundle](http://www.dropwizard.io/1.0.0/dropwizard-assets/apidocs/io/dropwizard/assets/AssetsBundle.html)) that allows a dropwizard app to render and serve Markdown documents from the classpath. The goal is to provide a way to quickly and easily serve up static documentation for a service, taking advantage of Markdown's ease of editing and reusability.
+An assets bundle (like [io.dropwizard.assets.AssetsBundle](http://www.dropwizard.io/1.0.0/dropwizard-assets/apidocs/io/dropwizard/assets/AssetsBundle.html)) that allows a dropwizard app to render and serve Markdown documents from the classpath. The goal is to provide a way to quickly and easily serve up static documentation for a service, taking advantage of Markdown's ease of editing and reusability. For example:
+
+* Presenting markdown-based API documentation alongside a microservice
+* Hosting usage or design documentation (text, graphs and sequence diagrams)
+* Presenting basic usage notes for a public facing API, without requiring extra effort to construct fully-fledged HTML documentation
 
 In the 'out of the box' configuration (with default template and stylesheet) the following additional features are supported:
 
-* Fast, capable server-side markdown rendering using [flexmark-java](https://github.com/vsch/flexmark-java) (including Github Flavored Markdown):
+* Fast, capable server-side **markdown rendering** using [flexmark-java](https://github.com/vsch/flexmark-java) (including Github Flavored Markdown):
     * [Anchor links](https://github.com/vsch/flexmark-java/wiki/Extensions#anchorlink)
     * [Autolink](https://github.com/vsch/flexmark-java/wiki/Extensions#autolink)
     * [Footnotes](https://github.com/vsch/flexmark-java/wiki/Extensions#footnotes)
@@ -14,11 +18,11 @@ In the 'out of the box' configuration (with default template and stylesheet) the
     * [GFM Task lists](https://github.com/vsch/flexmark-java/wiki/Extensions#gfm-tasklist)
     * [GFM Tables](https://github.com/vsch/flexmark-java/wiki/Extensions#tables)
 * [Generated tables of contents](https://github.com/vsch/flexmark-java/wiki/Extensions#table-of-contents-1)
-* Optional rendering of diagrams using [Mermaid](https://knsv.github.io/mermaid/) in conjunction with fenced code blocks for graceful degradation:
+* Optional rendering of **diagrams** using [Mermaid](https://knsv.github.io/mermaid/) in conjunction with fenced code blocks for graceful degradation:
     * Graphs and flowcharts
     * Sequence diagrams
     * Gantt charts
-* Optional code syntax highlighting using [highlight.js](https://highlightjs.org/)
+* Optional code **syntax highlighting** using [highlight.js](https://highlightjs.org/)
 * Optional analytics integration using Google Analytics
 * A simple and (subjectively!) nice default stylesheet
 * Ability to serve non-markdown static assets of any type, as well
