@@ -101,3 +101,9 @@ This library takes inspiration from or utilizes:
 * https://github.com/vsch/flexmark-java
 * https://knsv.github.io/mermaid/
 * https://highlightjs.org/
+
+### Changelog
+
+#### [1.0.0](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.0)
+
+Initial release
