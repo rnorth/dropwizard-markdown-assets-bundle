@@ -8,6 +8,25 @@
     <artifactId>dropwizard-markdown-assets-bundle</artifactId>
     <version>1.0.3-SNAPSHOT</version>
 
+    <name>Dropwizard Markdown Assets Bundle</name>
+    <description>
+        A dropwizard assets bundle that renders Markdown files as pretty HTML
+    </description>
+    <url>https://github.com/rnorth/dropwizard-markdown-assets-bundle</url>
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>http://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>rnorth</id>
+            <name>Richard North</name>
+            <email>rich.north@gmail.com</email>
+        </developer>
+    </developers>
+
     <properties>
         <dropwizard.version>1.0.0</dropwizard.version>
         <flexmark.version>0.4.17</flexmark.version>
