@@ -6,7 +6,7 @@
 
     <groupId>org.rnorth.dropwizard</groupId>
     <artifactId>dropwizard-markdown-assets-bundle</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <properties>
         <dropwizard.version>1.0.0</dropwizard.version>
