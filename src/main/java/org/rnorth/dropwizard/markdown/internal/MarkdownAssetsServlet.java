@@ -134,8 +134,8 @@ public class MarkdownAssetsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
-        if (uriPath.equals(path)) {
-            path = "/" + indexFile;
+        if (path.endsWith("/")) {
+            path = path + indexFile;
         }
 
         CachedPage renderedPage;
