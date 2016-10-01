@@ -105,6 +105,10 @@ This library takes inspiration from or utilizes:
 
 ### Changelog
 
+#### [1.0.2](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.2)
+
+* Fix additional index document rendering issue
+
 #### [1.0.1](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.1)
 
 * Fix index document rendering issue
