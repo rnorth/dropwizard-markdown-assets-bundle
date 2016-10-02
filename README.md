@@ -107,6 +107,14 @@ This library takes inspiration from or utilizes:
 
 ### Changelog
 
+#### [1.0.4](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.4)
+
+* Responsive layout fixes
+
+#### [1.0.3](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.3)
+
+* Fix additional index document rendering issues for directory URLs
+
 #### [1.0.2](https://github.com/rnorth/dropwizard-markdown-assets-bundle/releases/tag/1.0.2)
 
 * Fix additional index document rendering issue

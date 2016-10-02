@@ -411,6 +411,10 @@ body {
     body {
         width: 95%;
     }
+
+    ul, ol {
+        margin-left: 1em;
+    }
 }
 
 @media screen and (min-width: 660px) {
@@ -538,7 +542,7 @@ blockquote {
 }
 
 blockquote ol, blockquote ul {
-    margin-left: 2em;
+    margin-left: 1em;
 }
 
 ol > li {
