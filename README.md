@@ -33,8 +33,8 @@ In the 'out of the box' configuration (with default template and stylesheet) the
 
 ### Basic setup
 
-1. Add the `dropwizard-markdown-assets-bundle` JAR to your Dropwizard application dependencies.
-2. Modify your configuration class to implement `MarkdownBundleConfiguration`. Implementing this will entail adding a `MarkdownAssetsConfiguration` getter to your configuration class, as in the example below.
+* Add the `dropwizard-markdown-assets-bundle` JAR to your Dropwizard application dependencies.
+* Modify your configuration class to implement `MarkdownBundleConfiguration`. Implementing this will entail adding a `MarkdownAssetsConfiguration` getter to your configuration class, as in the example below.
 
 ```java
 public static class TestConfiguration extends Configuration implements MarkdownBundleConfiguration {
@@ -48,7 +48,7 @@ public static class TestConfiguration extends Configuration implements MarkdownB
 }
 ```
 
-3. Modify your Application `bootstrap` method to register a `MarkdownAssetsBundle`:
+* Modify your Application `bootstrap` method to register a `MarkdownAssetsBundle`:
 
 ```java
         @Override
@@ -57,8 +57,8 @@ public static class TestConfiguration extends Configuration implements MarkdownB
         }
 ```
 
-4. (For starters) place a markdown file named `index.md` in the `/assets` folder of your application classpath.
-5. Launch the application and see that the markdown file is available at `http://localhost:8080/assets/`, rendered as HTML.
+* (For starters) place a markdown file named `index.md` in the `/assets` folder of your application classpath.
+* Launch the application and see that the markdown file is available at `http://localhost:8080/assets/`, rendered as HTML.
 
 ### Customising behaviour
 
