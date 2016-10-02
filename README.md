@@ -33,7 +33,15 @@ In the 'out of the box' configuration (with default template and stylesheet) the
 
 ### Basic setup
 
-* Add the `dropwizard-markdown-assets-bundle` JAR to your Dropwizard application dependencies.
+* Add the `dropwizard-markdown-assets-bundle` JAR to your Dropwizard application dependencies:
+```xml
+<dependency>
+    <groupId>org.rnorth.dropwizard</groupId>
+    <artifactId>dropwizard-markdown-assets-bundle</artifactId>
+    <version>1.0.4</version>
+</dependency>
+
+```
 * Modify your configuration class to implement `MarkdownBundleConfiguration`. Implementing this will entail adding a `MarkdownAssetsConfiguration` getter to your configuration class, as in the example below.
 
 ```java
