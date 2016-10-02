@@ -8,7 +8,7 @@ An assets bundle (like [io.dropwizard.assets.AssetsBundle](http://www.dropwizard
 * Hosting usage or design documentation (text, graphs and sequence diagrams)
 * Presenting basic usage notes for a public facing API, without requiring extra effort to construct fully-fledged HTML documentation
 
-#### A basic demo 'application' (consisting of documentation examples and nothing more) can be seen [here](https://dropwizard-markdown-demo.herokuapp.com/docs/) (see [here](https://github.com/rnorth/dropwizard-markdown-assets-bundle-demo) for source code).
+### A basic demo 'application' (consisting of documentation examples and nothing more) can be seen [here](https://dropwizard-markdown-demo.herokuapp.com/docs/) (see [here](https://github.com/rnorth/dropwizard-markdown-assets-bundle-demo) for source code).
 
 In the 'out of the box' configuration (with default template and stylesheet) the following additional features are supported:
 
